@@ -1,24 +1,3 @@
-# README
+# Item Management Application
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+This is a simple application built with **Ruby on Rails** and **GraphQL** for managing items. It provides a backend API with GraphQL queries for fetching and managing data, and a frontend that communicates with the backend to display the items.
