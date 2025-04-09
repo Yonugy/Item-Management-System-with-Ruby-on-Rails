@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .item-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .item {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .item h3 {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Item List</h1>
+
+    <div>
+        <input type="text" id="search" placeholder="Search for items..." />
+        Search By:
+        <select id="searchMethod" name="searchMethod" defaultValue="title">
+            <option value="title">Item Name</option>
+            <option value="category">Item Category</option>
+        </select>
+        Sort By:
+        <select id="sortMethod" name="sortMethod" defaultValue="title">
+            <option value="title">Item Name</option>
+            <option value="category">Item Category</option>
+        </select>
+        <input type="checkbox" name="favourite" value="favourite" id="favourite">
+        <label for="favourite">Favourite Only</label>
+        <button onclick="fetchItems()">Fetch</button>
+    </div>
+
+
+    <ul class="item-list" id="item-list"></ul>
+
+    <script>
+
+        // Fetch all items from the GraphQL API
+        async function fetchItems() {
+            let searchMethod = document.getElementById("searchMethod").value;
+            let searchValue = document.getElementById("search").value;
+            let sortMethod = document.getElementById("sortMethod").value;
+            let favourite = document.querySelector('input[name="favourite"]').checked;
+            console.log(searchMethod);
+            const response = await fetch('http://localhost:3000/graphql', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: `
+                        query {
+                        items(search: "${searchValue}", filterBy: "${searchMethod}" ,sortBy: "${sortMethod}", sortOrder: "asc", favourite: ${favourite}) {
+                            id
+                            title
+                            category
+                            isFavorite
+                        }
+                        }
+                    `,
+                }),
+            });
+
+            const data = await response.json();
+            const items = data.data.items;
+
+            // Display items
+            document.getElementById("item-list").innerHTML = '';
+            const itemListElement = document.getElementById('item-list');
+            items.forEach(item => {
+                const itemElement = document.createElement('li');
+                itemElement.className = 'item';
+                itemElement.innerHTML = `
+          <h3>${item.title}</h3>
+          <p>Category: ${item.category}</p>
+          <p>Favorite: ${item.isFavorite ? 'Yes' : 'No'}</p>
+          <button onclick="toggleFavorite(${item.id})">${item.isFavorite ? 'Unfavorite' : 'Favorite'}</button>
+        `;
+                itemListElement.appendChild(itemElement);
+            });
+        }
+
+        // Toggle favorite status of an item
+        async function toggleFavorite(itemId) {
+            const response = await fetch('http://localhost:3000/graphql', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: `
+                        mutation {
+                            toggleFavourite(input: { id: ${itemId} }) {
+                                item {
+                                    id
+                                    isFavorite
+                                }
+                            }
+                        }
+                    `,
+                }),
+            });
+
+            const data = await response.json();
+            console.log(data);
+            fetchItems(); // Refresh the item list after toggling favorite status
+        }
+
+        // Run the fetchItems function on page load
+        window.onload = fetchItems;
+    </script>
+</body>
+
+</html>
