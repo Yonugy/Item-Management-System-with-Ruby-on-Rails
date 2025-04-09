@@ -50,6 +50,8 @@
         <button onclick="resetItems()">Clear Search</button>
     </div>
 
+    <div id="catList"></div>
+
 
     <ul class="item-list" id="item-list"></ul>
 
@@ -61,6 +63,7 @@
             document.getElementById("sortMethod").value = 'title';
             document.querySelector('input[name="favourite"]').checked = false;
             fetchItems();
+            fetchCategories();
         }
 
         // Fetch all items from the GraphQL API
@@ -69,7 +72,10 @@
             let searchValue = document.getElementById("search").value;
             let sortMethod = document.getElementById("sortMethod").value;
             let favourite = document.querySelector('input[name="favourite"]').checked;
-            console.log(favourite);
+
+            const selectedCategories = Array.from(document.querySelectorAll('input[name="categories"]:checked'))
+                .map(checkbox => checkbox.value);
+
             const response = await fetch('http://localhost:3000/graphql', {
                 method: 'POST',
                 headers: {
@@ -78,7 +84,7 @@
                 body: JSON.stringify({
                     query: `
                         query {
-                        items(search: "${searchValue}", filterBy: "${searchMethod}" ,sortBy: "${sortMethod}", sortOrder: "asc", favourite: ${favourite}) {
+                        items(search: "${searchValue}", filterBy: "${searchMethod}" ,sortBy: "${sortMethod}", sortOrder: "asc", favourite: ${favourite}, categories: ${JSON.stringify(selectedCategories)}) {
                             id
                             title
                             category
@@ -132,10 +138,54 @@
             const data = await response.json();
             console.log(data);
             fetchItems(); // Refresh the item list after toggling favorite status
+            fetchCategories();
         }
 
+        // Fetch all categories from the GraphQL API
+    async function fetchCategories() {
+        const response = await fetch('http://localhost:3000/graphql', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                query: `
+                    query {
+                        categories
+                    }
+                `,
+            }),
+        });
+
+        const data = await response.json();
+        const categories = data.data.categories;
+
+        // Populate the catList div with checkboxes for each category
+        const catListDiv = document.getElementById("catList");
+        catListDiv.innerHTML = ''; // Clear any existing content
+        categories.forEach(category => {
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.id = `category-${category}`;
+            checkbox.name = "categories";
+            checkbox.value = category;
+            checkbox.checked = true;
+
+            const label = document.createElement("label");
+            label.htmlFor = `category-${category}`;
+            label.textContent = category;
+
+            catListDiv.appendChild(checkbox);
+            catListDiv.appendChild(label);
+            catListDiv.appendChild(document.createElement("br"));
+        });
+    }
+
         // Run the fetchItems function on page load
-        window.onload = fetchItems;
+        window.onload = function () {
+            fetchCategories();
+            fetchItems();
+        };
     </script>
 </body>
 

@@ -28,30 +28,12 @@ module Types
       argument :sort_by, String, required: false, default_value: 'created_at', description: "Field to sort by"
       argument :sort_order, String, required: false, default_value: 'desc', description: "Sort order (asc or desc)"
       argument :favourite, Boolean, required: false, description: "Enable favourite only"
+      argument :categories, [String], required: false, description: "Filter by categories"
     end
 
     # Resolver for fetching all items
-    def items(search: nil, filter_by:, sort_by:, sort_order:,favourite: false)
-      # query = Item.all
-
-      # # Implement Search
-      # if search.present?
-      #   query = query.where('title ILIKE ?', "%#{search}%")
-      # end
-
-      # # Implement Sorting
-      # if sort_order == 'desc'
-      #   query = query.order("#{sort_by} DESC")
-      # else
-      #   query = query.order("#{sort_by} ASC")
-      # end
-
-      # query
-      # Initialize the query on the `Item` model
+    def items(search: nil, filter_by:, sort_by:, sort_order:, favourite: false, categories: [])
       query = Item.all
-
-      # Apply search filter if search term is provided
-      
 
       if search.present?
         if filter_by == "title"
@@ -59,17 +41,20 @@ module Types
         elsif filter_by == "category"
           query = query.where("category LIKE ?", "%#{search}%")
         end
-        # query = query.where('title LIKE ? OR category LIKE ?', "%#{search}%", "%#{search}%")
       end
 
-      if (favourite)
-        query = query.where(is_favorite: true)
-      end
-
+      query = query.where(is_favorite: true)
+      query = query.where(category: categories) if categories.any?
       # Apply sorting based on the `sort_by` and `sort_order` arguments
       query = query.order("#{sort_by} #{sort_order}")
 
       query
+    end
+
+    field :categories, [String], null: false, description: "Fetch all unique categories"
+
+    def categories
+      Item.distinct.pluck(:category)
     end
 
     # Add root-level fields here.
