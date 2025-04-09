@@ -27,10 +27,11 @@ module Types
       argument :filter_by, String, required: false, description: "Filter by either title or category"
       argument :sort_by, String, required: false, default_value: 'created_at', description: "Field to sort by"
       argument :sort_order, String, required: false, default_value: 'desc', description: "Sort order (asc or desc)"
+      argument :favourite, Boolean, required: false, description: "Enable favourite only"
     end
 
     # Resolver for fetching all items
-    def items(search: nil, filter_by:, sort_by:, sort_order:)
+    def items(search: nil, filter_by:, sort_by:, sort_order:,favourite: false)
       # query = Item.all
 
       # # Implement Search
@@ -59,6 +60,10 @@ module Types
           query = query.where("category LIKE ?", "%#{search}%")
         end
         # query = query.where('title LIKE ? OR category LIKE ?', "%#{search}%", "%#{search}%")
+      end
+
+      if (favourite)
+        query = query.where(is_favourite: true)
       end
 
       # Apply sorting based on the `sort_by` and `sort_order` arguments
