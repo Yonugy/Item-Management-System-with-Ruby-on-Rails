@@ -63,7 +63,7 @@ module Types
       end
 
       if (favourite)
-        query = query.where(is_favourite: true)
+        query = query.where(is_favorite: true)
       end
 
       # Apply sorting based on the `sort_by` and `sort_order` arguments

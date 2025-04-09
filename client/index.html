@@ -47,6 +47,7 @@
         <input type="checkbox" name="favourite" value="favourite" id="favourite">
         <label for="favourite">Favourite Only</label>
         <button onclick="fetchItems()">Fetch</button>
+        <button onclick="resetItems()">Clear Search</button>
     </div>
 
 
@@ -54,13 +55,21 @@
 
     <script>
 
+        function resetItems() {
+            document.getElementById("search").value = '';
+            document.getElementById("searchMethod").value = 'title';
+            document.getElementById("sortMethod").value = 'title';
+            document.querySelector('input[name="favourite"]').checked = false;
+            fetchItems();
+        }
+
         // Fetch all items from the GraphQL API
         async function fetchItems() {
             let searchMethod = document.getElementById("searchMethod").value;
             let searchValue = document.getElementById("search").value;
             let sortMethod = document.getElementById("sortMethod").value;
             let favourite = document.querySelector('input[name="favourite"]').checked;
-            console.log(searchMethod);
+            console.log(favourite);
             const response = await fetch('http://localhost:3000/graphql', {
                 method: 'POST',
                 headers: {

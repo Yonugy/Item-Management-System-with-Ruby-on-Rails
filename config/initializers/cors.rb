@@ -17,7 +17,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins '127.0.0.1:5500'  # Allow the specific frontend origin
+    origins '127.0.0.1:5500', 'https://item-management-system-brown.vercel.app'  # Allow the specific frontend origin
 
     resource '*',  # Allow all resources
       headers: :any,  # Allow any headers
