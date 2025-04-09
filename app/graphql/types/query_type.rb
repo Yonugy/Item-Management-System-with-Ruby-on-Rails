@@ -43,7 +43,10 @@ module Types
         end
       end
 
-      query = query.where(is_favorite: true)
+      if (favourite)
+        query = query.where(is_favorite: true)
+      end
+
       query = query.where(category: categories) if categories.any?
       # Apply sorting based on the `sort_by` and `sort_order` arguments
       query = query.order("#{sort_by} #{sort_order}")
