@@ -3,7 +3,7 @@ services:
     name: item-backend
     env: ruby
     preBuildCommand: apt-get update && apt-get install -y libpq-dev # Install PostgreSQL client libraries
-    buildCommand: ./bin/render-build.sh
+    buildCommand: bundle config set frozen false && ./bin/render-build.sh
     startCommand: bundle exec puma -C config/puma.rb
     plan: free
     envVars:
