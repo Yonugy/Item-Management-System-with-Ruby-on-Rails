@@ -55,8 +55,7 @@ Rails.application.configure do
   config.active_record.attributes_for_inspect = [ :id ]
 
   # Disable asset compilation and enable serving static files if the environment variable is set.
-  config.assets.compile = false
-  config.assets.digest = true
+  config.asset_host.compile = false
 
   # Allow serving static files from public/ directory
   config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
