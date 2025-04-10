@@ -8,9 +8,9 @@ FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 # Set working directory
 WORKDIR /rails
 
-# Install base packages (remove sqlite3 and add postgresql-client)
+# Install PostgreSQL development libraries before running bundle install
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips postgresql-client && \
+    apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config libpq-dev && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set environment variables for production
