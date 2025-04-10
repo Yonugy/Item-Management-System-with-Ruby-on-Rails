@@ -53,3 +53,5 @@ gem 'graphql'
 gem 'rack-cors'
 
 gem 'pg'
+
+gem 'dotenv-rails', groups: [:development, :test, :production]
