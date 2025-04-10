@@ -56,9 +56,6 @@ Rails.application.configure do
 
   # Disable asset compilation and enable serving static files if the environment variable is set.
   config.assets.compile = false
-  config.assets.js_compressor = :uglifier
-  config.assets.css_compressor = :sass
-  config.assets.compile = false
   config.assets.digest = true
 
   # Allow serving static files from public/ directory
