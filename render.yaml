@@ -2,6 +2,7 @@ services:
   - type: web
     name: item-backend
     env: ruby
+    preBuildCommand: apt-get update && apt-get install -y libpq-dev # Install PostgreSQL client libraries
     buildCommand: bundle install && bundle exec rake assets:precompile db:migrate
     startCommand: bundle exec puma -C config/puma.rb
     plan: free
