@@ -22,5 +22,4 @@ gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
 gem "tzinfo-data", platforms: %i[windows mingw x64_mingw]
-gem 'sprockets-rails'
 
