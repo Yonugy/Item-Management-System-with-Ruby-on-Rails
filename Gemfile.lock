@@ -312,7 +312,7 @@ DEPENDENCIES
   brakeman
   debug
   dotenv-rails
-  graphiql-rails (~> 1.8)
+  graphiql-rails
   graphql
   kamal
   pg (~> 1.3)

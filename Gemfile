@@ -12,7 +12,7 @@ group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "brakeman", require: false
   gem "rubocop-rails-omakase", require: false
-  gem "graphiql-rails", "~> 1.8"
+  gem "graphiql-rails"
 end
 
 gem "bootsnap", require: false

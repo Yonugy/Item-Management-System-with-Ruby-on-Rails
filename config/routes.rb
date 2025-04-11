@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # Mount GraphiQL in all environments (development, production, etc.)
-  mount GraphQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
+  mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
 
   # POST request to handle GraphQL queries
   post "/graphql", to: "graphql#execute"
