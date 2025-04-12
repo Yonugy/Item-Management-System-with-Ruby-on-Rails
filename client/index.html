@@ -83,6 +83,7 @@
     <ul class="item-list" id="item-list"></ul>
 
     <script>
+        const link = "https://item-management-system.onrender.com/graphql";
 
         function resetItems() {
             document.getElementById("search").value = '';
@@ -103,7 +104,7 @@
             const selectedCategories = Array.from(document.querySelectorAll('input[name="categories"]:checked'))
                 .map(checkbox => checkbox.value);
 
-            const response = await fetch('http://localhost:3000/graphql', {
+            const response = await fetch(link, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -143,7 +144,7 @@
 
         // Toggle favorite status of an item
         async function toggleFavorite(itemId) {
-            const response = await fetch('http://localhost:3000/graphql', {
+            const response = await fetch(link, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -170,7 +171,7 @@
 
         // Fetch all categories from the GraphQL API
         async function fetchCategories() {
-            const response = await fetch('http://localhost:3000/graphql', {
+            const response = await fetch(link, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -235,7 +236,7 @@
             const category = document.getElementById("itemCategory").value;
             const isFavorite = document.getElementById("isFavorite").checked;
 
-            const response = await fetch('http://localhost:3000/graphql', {
+            const response = await fetch(link, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
