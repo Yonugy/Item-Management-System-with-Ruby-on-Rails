@@ -80,15 +80,6 @@ mutation {
 
 ---
 
-## 📁 Project Structure
-
-```
-/backend            # Rails app with GraphQL API
-/index.html         # Frontend (vanilla HTML/JS)
-```
-
----
-
 ## 🙌 Author
 
 Made with ❤️ by Yong Wai
