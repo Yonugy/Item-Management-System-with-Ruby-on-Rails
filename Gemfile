@@ -7,12 +7,12 @@ gem "bcrypt", "~> 3.1.7" # Added bcrypt for secure passwords
 gem "rack-cors"
 gem "graphql"
 gem "dotenv-rails", groups: [:development, :test, :production]
-gem "graphiql-rails", "~> 1.8"
 
 group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "brakeman", require: false
   gem "rubocop-rails-omakase", require: false
+  gem "graphiql-rails", "~> 1.8"
 end
 
 gem "bootsnap", require: false
